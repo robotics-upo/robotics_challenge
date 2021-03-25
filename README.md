@@ -8,18 +8,12 @@ This branch has been specifically adapted to the ROS Melodic distribution, and t
 We provide you with a useful installation script that you can use for easily installing it into a ROS workspace. To use it you have to specify the target catkin workspace where the node should be installed. To do this you can use:
 
 ```
-rosrun robotics_challenge install.bash <location of target workspace>
-```
-
-Example:
-
-```
-rosrun robotics_challenge install.bash ~/catkin_ws
+rosrun robotics_challenge install.bash
 ```
 
 ## How to use the challenge
 
-The goal of the challenge is to setup the simulation environment in which your path tracking, path planning and collision avoidance modules should be used in order to guide the Turtlebot robot to a goal destination. 
+The goal of the challenge is to setup the simulation environment in which your path tracking, path planning and collision avoidance modules should be used in order to guide the Turtlebot robot to a goal destination.
 
 This configuration includes the setup of:
 
@@ -27,3 +21,8 @@ This configuration includes the setup of:
 * The spawn of a Turtlebot robot equipped with a LASER sensor and a RGBD camera.
 * The localization module (AMCL) and the map that should be used as the frame to determine the navigation goals.
 
+A convenient bash script is available for each scenario (1-3). Example:
+
+```
+$  rosrun robotics_challenge robotics_challenge_1.bash
+```
