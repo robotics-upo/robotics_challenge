@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-	<master auto="true"/>
 	<node pkg="rosbag" type="record" name="record_1" args=
 		"/scan
-		/tf /odom /tf_static
+		/tf /odom /tf_static /cmd_vel
 		-o $(find robotics_challenge)/bags/test" />
 </launch>

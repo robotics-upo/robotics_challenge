@@ -49,11 +49,29 @@ class Metrics:
         self.elapsed_time = -1.0
 
         self.historic_min_range = []
+        self.historic_cmd_vel_lin = []
+        self.historic_cmd_vel_ang = []
         
+        self.max_lin = rospy.get_param('~max_lin', default=0.5)
+        self.max_ang = rospy.get_param('~max_ang', default=1.0)
+        self.ang_penalty = False
+        self.lin_penalty = False  
+        
+
+
         rospy.Subscriber("/scan", LaserScan, self.callback)
+        rospy.Subscriber("/cmd_vel", Twist, self.cmd_vel_callback)
 
     def callback(self, data):
         self.historic_min_range.append(min(data.ranges))
+
+    def cmd_vel_callback(self, data):
+        self.historic_cmd_vel_lin.append(data.linear.x)
+        self.historic_cmd_vel_ang.append(data.angular.z)
+        if np.abs(data.linear.x) > self.max_lin:
+            self.lin_penalty = True
+        if np.abs(data.linear.x) > self.max_ang:
+            self.ang_penalty = True
 
     def getTransform(self):
         try:
@@ -97,7 +115,18 @@ class Metrics:
                     f.write('Min distance to obstacles: %f\n'%(min(self.historic_min_range)))
                     f.write('Historic range: ')
                     f.write(' '.join(str(a) for a in self.historic_min_range))
-                    f.write('\n')   
+                    f.write('\n')
+                if (len(self.historic_cmd_vel_lin) > 0):
+                    f.write('Linear penalty: %d\n'%(self.lin_penalty))
+                    f.write('Historic linear cmd_vel: ')
+                    f.write(' '.join(str(a) for a in self.historic_cmd_vel_lin))
+                    f.write('\n')
+                if (len(self.historic_cmd_vel_ang) > 0):
+                    f.write('Angular penalty: %d\n'%(self.ang_penalty))
+                    f.write('Historic angular cmd_vel: ')
+                    f.write(' '.join(str(a) for a in self.historic_cmd_vel_ang))
+                    f.write('\n')
+                   
             rospy.loginfo('File exported successfully. Filename: %s', self.output_file)
         except OSError as e:
             rospy.logerr('Could not save output file. Filename = %s', str(e))
