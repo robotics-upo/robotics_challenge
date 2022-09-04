@@ -1,0 +1,28 @@
+<launch>
+    <arg name="scenario" default="lab"/> <!-- lab or house-->
+
+    <arg name="init_x" default ="0" />
+    <arg name="init_y" default ="0"/>
+    <arg name="init_a" default ="0"/>
+    
+    <arg name="map_name" default="lab_23_1_11.yaml"/>
+    <arg name="map_file" default="$(find robotics_challenge)/maps/$(arg map_name)"/>
+    
+	<!--Start the map server for the path planner-->
+ 	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+	<node pkg="costmap_2d" type="costmap_2d_node" name="costmap_2d" output="screen">
+        <rosparam command="load" file="$(find robotics_challenge)/cfg/global_costmap_params.yaml" />
+    </node>
+	
+	<!--Start the Montecarlo Localization module-->
+    
+	<node pkg="amcl" type="amcl" name="amcl" args="scan:=/base_scan">
+		<param name="initial_pose_x" value="$(arg init_x)" /> 
+        <param name="initial_pose_y" value="$(arg init_y)" />
+		<param name="initial_pose_a" value="$(arg init_a)" />
+	</node>
+
+	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find robotics_challenge)/rviz/magabot.rviz"/>
+
+    <include file="$(find magabot)/launch/magabot.launch"/>
+</launch>
