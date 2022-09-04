@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-# A very basic TurtleBot script that moves TurtleBot forward indefinitely. Press CTRL + C to stop.  To run:
-# On TurtleBot:
-# roslaunch turtlebot_bringup minimal.launch
-# On work station:
-# python goforward.py
+# This script is used for generating the statistics that will be used in
+# the evaluation of the subject Robotics and Artificial Vision of
+# 4th grade of the Informatics Degree at UPO
+
 
 import sys
 import math

@@ -58,4 +58,11 @@
     <!-- TODO: Include the launch files of EPD3, EPD4 and EPD5 -->
     <!-- So that your system starts automatically with the simulation-->
     <!-- You should use the directive "include" -->
+    <include file="$(find epd5)/launch/planner.launch"/>
+    <node name="point_publisher" pkg="rva_basic_tools" type="pointPublisher.py">
+        <param name="x" value="$(arg goal_x)"/>
+        <param name="y" value="$(arg goal_y)"/>
+        <param name="n" value="5" />
+    </node>
+    <include file="$(find robotics_challenge)/launch/recording.launch"/>
 </launch>
